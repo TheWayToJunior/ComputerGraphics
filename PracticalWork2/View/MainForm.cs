@@ -44,7 +44,7 @@ namespace PracticalWork
         {
             pictureBox1.Refresh();
 
-            DrawСhart(pictureBox1.Width / 96.358f, pictureBox1.Height / 96.358f, GraphicsUnit.Inch, 0.025f);
+            DrawСhart(pictureBox1.Width / 96.358f, pictureBox1.Height / 96.358f, GraphicsUnit.Inch, 0.05f);
         }
 
         private void DrawСhart(float width, float height, GraphicsUnit unit, float scale = 1)
