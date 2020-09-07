@@ -57,9 +57,7 @@ namespace PracticalWork
 
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            var pen = new Pen(Color.Red, 1f);
-
-            graphics.DrawCurve(pen, SolveExpression((x) => x * 3 + x - 4, start: -20f, end: 20f)
+            graphics.DrawCurve(Pens.Red, SolveExpression((x) => x * 3 + x - 4, start: -20f, end: 20f)
                 .ToArray());
         }
 
