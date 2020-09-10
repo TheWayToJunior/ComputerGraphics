@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Factory\SmallFactory.cs" />
+    <Compile Include="Factory\TextCreator.cs" />
     <Compile Include="Models\BaseText.cs" />
     <Compile Include="Services\SerializationService.cs" />
     <Compile Include="View\MainForm.cs">

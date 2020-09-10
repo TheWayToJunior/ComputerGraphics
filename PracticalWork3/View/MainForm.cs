@@ -1,4 +1,5 @@
 ﻿using PracticalWork3.Abstractions;
+using PracticalWork3.Factory;
 using PracticalWork3.Models;
 using PracticalWork3.Services;
 using System;
@@ -34,20 +35,6 @@ namespace PracticalWork3
 
         }
 
-        private int countItem = 0;
-
-        private IEnumerable<BaseText> Create(SmallFactory factory, string text, Font font, StringAlignment alignment, int count)
-        {
-            var list = new List<BaseText>();
-
-            for (int i = 0; i < count; i++, countItem++)
-            {
-                list.Add(factory.Create($"{text} {countItem}", font, alignment));
-            }
-
-            return list;
-        }
-
         private void CreateAndPrintText()
         {
             pictureBox1.Refresh();
@@ -59,9 +46,11 @@ namespace PracticalWork3
             var horizontalFactory = new HorizontalTextFactory();
             var verticalFactory = new VerticalTextFactory();
 
-            texts.AddRange(Create(horizontalFactory, "Hello world", font1, StringAlignment.Near, 6));
-            texts.AddRange(Create(verticalFactory, "Hello world", font2, StringAlignment.Far, 5));
-            texts.AddRange(Create(horizontalFactory, "Hello world", font3, StringAlignment.Center, 1));
+            var textCreator = new TextCreator();
+
+            texts.AddRange(textCreator.Create(horizontalFactory, "Hello world", font1, StringAlignment.Near, 6));
+            texts.AddRange(textCreator.Create(verticalFactory, "Hello world", font2, StringAlignment.Far, 5));
+            texts.AddRange(textCreator.Create(horizontalFactory, "Hello world", font3, StringAlignment.Center, 1));
 
             this.printService.DrawText(pictureBox1.CreateGraphics(), texts, startPoint);
         }
