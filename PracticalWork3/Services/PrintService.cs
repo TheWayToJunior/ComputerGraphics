@@ -7,45 +7,41 @@ namespace PracticalWork3.Services
 {
     public interface IPrintService
     {
-        void DrawText(int x, int y, BaseText text);
+        void DrawText(Graphics graphics, BaseText text, int x, int y);
 
-        void DrawText(Point startPoint, IEnumerable<BaseText> texts);
+        void DrawText(Graphics graphics, IEnumerable<BaseText> texts, Point startPoint);
     }
 
     public sealed class PrintService : IPrintService
     {
-        private readonly Graphics graphics;
+        private readonly Size size;
 
         public PrintService(Control control)
         {
-            graphics = control.CreateGraphics();
-
-            graphics.Clip = new Region(
-                new Rectangle(control.ClientRectangle.X, control.ClientRectangle.Y,
-                    control.ClientRectangle.Width, control.ClientRectangle.Height));
+            this.size = control.Size;
         }
 
-        public void DrawText(int x, int y, BaseText text)
+        public void DrawText(Graphics graphics, BaseText text, int x, int y)
         {
             StringFormat format = StringFormat.GenericTypographic.Clone() as StringFormat;
-            
+
             format.Alignment = text.Alignment;
             format.LineAlignment = text.LineAlignment;
             format.FormatFlags = text.FormatFlags | StringFormatFlags.NoClip;
 
-            Rectangle rectangle = new Rectangle(x, y, (int)graphics.ClipBounds.Width, (int)graphics.ClipBounds.Height);
+            Rectangle rectangle = new Rectangle(x, y, size.Width, size.Height);
 
-            graphics.DrawString(text.Value, new Font(text.FontFamily, text.FontSize, FontStyle.Bold), 
+            graphics.DrawString(text.Value, new Font(text.FontFamily, text.FontSize, FontStyle.Bold),
                 Brushes.Black, rectangle, format);
         }
 
-        public void DrawText(Point startPoint, IEnumerable<BaseText> texts)
+        public void DrawText(Graphics graphics, IEnumerable<BaseText> texts, Point startPoint)
         {
             foreach (var text in texts)
             {
                 if (text.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
                 {
-                    DrawText(startPoint.X, 0, text);
+                    DrawText(graphics, text, startPoint.X, 0);
 
                     if(text.FormatFlags.HasFlag(StringFormatFlags.DirectionRightToLeft))
                         startPoint.X -= (int)text.FontSize;
@@ -56,7 +52,7 @@ namespace PracticalWork3.Services
                 {
                     startPoint.X = 0;
 
-                    DrawText(startPoint.X, startPoint.Y, text);
+                    DrawText(graphics, text, startPoint.X, startPoint.Y);
                 }
 
                 startPoint.Y += (int)text.FontSize;

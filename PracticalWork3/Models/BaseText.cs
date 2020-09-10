@@ -1,9 +1,17 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Xml.Serialization;
 
 namespace PracticalWork3.Models
 {
+    [Serializable]
+    [XmlInclude(typeof(TextModel))]
     public abstract class BaseText
     {
+        public BaseText()
+        {
+        }
+
         public BaseText(string value, Font font, StringFormatFlags formatFlags,
             StringAlignment alignment, StringAlignment lineAlignment)
         {

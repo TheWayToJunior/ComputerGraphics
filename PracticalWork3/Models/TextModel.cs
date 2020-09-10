@@ -6,6 +6,10 @@ namespace PracticalWork3.Models
     [Serializable]
     public class TextModel : BaseText
     {
+        public TextModel()
+        {
+        }
+
         public TextModel(string value, Font font)
             : this(value, font, StringFormatFlags.NoWrap)
         {
