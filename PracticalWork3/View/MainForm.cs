@@ -32,7 +32,6 @@ namespace PracticalWork3
 
             if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}data.xml"))
                 this.texts.AddRange(this.serializationService.Deserialize<BaseText[]>());
-
         }
 
         private void CreateAndPrintText()
@@ -44,12 +43,12 @@ namespace PracticalWork3
             var font3 = new Font("Cambria", 48f, FontStyle.Regular);
 
             var horizontalFactory = new HorizontalTextFactory();
-            var verticalFactory = new VerticalTextFactory();
+            var verticalFactory   = new VerticalTextFactory();
 
             var textCreator = new TextCreator();
 
             texts.AddRange(textCreator.Create(horizontalFactory, "Hello world", font1, StringAlignment.Near, 6));
-            texts.AddRange(textCreator.Create(verticalFactory, "Hello world", font2, StringAlignment.Far, 5));
+            texts.AddRange(textCreator.Create(verticalFactory,   "Hello world", font2, StringAlignment.Far, 5));
             texts.AddRange(textCreator.Create(horizontalFactory, "Hello world", font3, StringAlignment.Center, 1));
 
             this.printService.DrawText(pictureBox1.CreateGraphics(), texts, startPoint);
