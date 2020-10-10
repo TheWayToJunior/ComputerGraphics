@@ -1,6 +1,5 @@
 ﻿using PracticalWork4.Models;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,7 +12,9 @@ namespace PracticalWork4
         private int[] numbers;
 
         private Offset offset;
-        private Random rnd = new Random((int)DateTime.Now.Ticks);
+
+        private DrawingGraphics drawingGraphics;
+        private GraphicsSignature graphicsSignature;
 
         public Form1()
         {
@@ -21,8 +22,15 @@ namespace PracticalWork4
 
             pictureBox1.Paint += PictureBox1_Paint;
             button1.Click += Button1_Click;
+            button2.Click += (s, e) => 
+            {
+                drawingGraphics = null;
+                pictureBox1.Refresh();
+            };
 
             this.Resize += (s, e) => pictureBox1.Refresh();
+
+            Random rnd = new Random((int)DateTime.Now.Ticks);
 
             numbers = Enumerable.Range(-12, 31).OrderBy(r => rnd.Next()).ToArray();
             max = numbers.Max(i => Math.Abs(i));
@@ -32,30 +40,22 @@ namespace PracticalWork4
         {
             pictureBox1.Refresh();
 
-            var listPoints = new List<PointF>();
-
             var g = pictureBox1.CreateGraphics();
             g.TranslateTransform(offset.X, offset.Y);
 
             var p = new Pen(Color.Green, 3);
             p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
 
-            /// TODO: Encapsulate logic in a separate class DrawingGraphics
-            float indentX = (float)(pictureBox1.Width - (offset.X + 10)) / (numbers.Count() * 10);
-            float indentY = (pictureBox1.Height / 2 - 10) / (numbers.Count() * 10f);
-
-            for (int i = 1; i < numbers.Count() + 1; i++)
+            graphicsSignature = new GraphicsSignature
             {
-                float x = i * 10 * indentX;
-                float y = -numbers[i - 1] * 10 / ((float)max / numbers.Count()) * indentY;
+                Pen = p,
+                Brush = Brushes.Blue,
+                Font = new Font("Arial", 10),
+            };
 
-                listPoints.Add(new PointF(x, y));
-
-                g.DrawEllipse(Pens.Blue, x - 2.5f, y - 2.5f, 5f, 5f);
-                g.DrawString(numbers[i - 1].ToString(), new Font("Arial", 10), Brushes.Blue, x + 5, y);
-            }
-
-            g.DrawLines(p, listPoints.ToArray());
+            drawingGraphics = new DrawingGraphics(g);
+            drawingGraphics.Draw(numbers, new RectangleF(offset.X, -offset.Y,
+                pictureBox1.Width, pictureBox1.Height), graphicsSignature);
         }
 
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
@@ -76,6 +76,9 @@ namespace PracticalWork4
             var draw = new DrawingСoordinateSystem(g, cs);
 
             offset = draw.Draw();
+
+            drawingGraphics?.Draw(numbers, new RectangleF(offset.X, -offset.Y,
+                pictureBox1.Width, pictureBox1.Height), graphicsSignature, g);
         }
     }
 }

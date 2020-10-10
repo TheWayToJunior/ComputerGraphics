@@ -46,8 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DrawingGraphics.cs" />
     <Compile Include="Models\DescriptionAttribute.cs" />
     <Compile Include="DrawingСoordinateSystem.cs" />
+    <Compile Include="Models\Signature.cs" />
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,7 +58,6 @@
     </Compile>
     <Compile Include="Models\CoordinateAxis.cs" />
     <Compile Include="Models\CoordinateSystem.cs" />
-    <Compile Include="Models\CoordinateSystemSignature.cs" />
     <Compile Include="Models\DrawSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
