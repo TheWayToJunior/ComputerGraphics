@@ -92,7 +92,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Image\1f88b63847af9c4ac01df7e35eed3e4a.jpg" />
+    <Content Include="Image\back.jpg" />
     <Content Include="Image\back.png" />
     <Content Include="Image\icon.png" />
     <Content Include="Image\rabbit.png" />

@@ -37,9 +37,10 @@ namespace PracticalWork8
             // pbMain
             // 
             this.pbMain.BackColor = System.Drawing.Color.Transparent;
-            this.pbMain.Location = new System.Drawing.Point(1, 2);
+            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbMain.Location = new System.Drawing.Point(0, 0);
             this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(1174, 745);
+            this.pbMain.Size = new System.Drawing.Size(1187, 746);
             this.pbMain.TabIndex = 0;
             this.pbMain.TabStop = false;
             // 

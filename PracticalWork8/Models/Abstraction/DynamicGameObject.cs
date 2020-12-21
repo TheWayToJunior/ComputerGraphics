@@ -22,8 +22,8 @@ namespace PracticalWork8.Models
 
         public void Animate(float frame)
         {
-            CurrentFrame  = frame % (CountFrames + 1);
-            CurrentSprite = ++CurrentSprite % (CountSprites + 1);
+            CurrentFrame  = frame % CountFrames;
+            CurrentSprite = ++CurrentSprite % CountSprites;
 
             float width = base.SrcRectangle.Width;
             float height = base.SrcRectangle.Height;

@@ -36,8 +36,8 @@ namespace PracticalWork8
                 Gap = new Gap(sprites: 0, frames: 6),
                 Point = new PointF(350, 70),
 
-                CountFrames = 3,
-                CountSprites = 3
+                CountFrames = 4,
+                CountSprites = 4
             };
 
             _player = new Player(_wolf);
@@ -47,16 +47,6 @@ namespace PracticalWork8
                 new Rabbit()
                 {
                     Point = new PointF(350, 300),
-                    Size = new SizeF(65, 65)
-                },
-                new Rabbit()
-                {
-                    Point = new PointF(650, 410),
-                    Size = new SizeF(65, 65)
-                },
-                new Rabbit()
-                {
-                    Point = new PointF(730, 150),
                     Size = new SizeF(65, 65)
                 }
             };
@@ -79,10 +69,15 @@ namespace PracticalWork8
             pbMain.Invalidate();
         }
 
+        Random random = new Random();
+        RandomMova r = new RandomMova();
+
         private void GamePaint(object sender, PaintEventArgs e)
         {
             _timer.Enabled = true;
             Text = count.ToString();
+
+            #region Perform refactoring
 
             float x = 0, y = 0;
 
@@ -105,8 +100,11 @@ namespace PracticalWork8
 
             foreach (var item in rabbits)
             {
+                item.Move(r);
                 item.Draw(e.Graphics);
             }
+
+            #endregion
 
             _wolf.Draw(e.Graphics);
         }

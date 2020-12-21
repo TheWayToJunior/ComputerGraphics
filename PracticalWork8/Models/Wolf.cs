@@ -4,7 +4,7 @@ namespace PracticalWork8.Models
 {
     public class Wolf : DynamicGameObject, IMoveable
     {
-        public float Speed { get; set; } = 7;
+        public float Speed { get; set; } = 5;
 
         public bool IsMoved { get; set; }
 
