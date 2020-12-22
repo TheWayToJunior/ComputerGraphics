@@ -7,6 +7,8 @@ namespace PracticalWork8.Models
     {
         public RectangleF SrcRectangle { get; set; }
 
+        public RectangleF DescRectangle => new RectangleF(Point, SrcRectangle.Size);
+
         public SizeF Size { get; set; }
 
         public PointF Point { get; set; }

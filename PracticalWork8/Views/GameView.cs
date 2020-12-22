@@ -13,8 +13,8 @@ namespace PracticalWork8
         private Wolf _wolf;
         private Player _player;
 
-        List<Rabbit> rabbits;
-        int count = 0;
+        private List<GameObject> _gameObjects;
+        private int _count = 0;
 
         public GameView()
         {
@@ -40,16 +40,16 @@ namespace PracticalWork8
                 CountSprites = 4
             };
 
-            _player = new Player(_wolf);
-
-            rabbits = new List<Rabbit>() 
+            _gameObjects = new List<GameObject>()
             {
                 new Rabbit()
                 {
                     Point = new PointF(350, 300),
-                    Size = new SizeF(65, 65)
+                    Size = new SizeF(50, 50)
                 }
             };
+
+            _player = new Player(_wolf);
         }
 
         private void GameView_KeyUp(object sender, KeyEventArgs e)
@@ -69,39 +69,44 @@ namespace PracticalWork8
             pbMain.Invalidate();
         }
 
-        Random random = new Random();
-        RandomMova r = new RandomMova();
+        Random random = new Random(DateTime.Now.Second);
+        RandomMova randomMova = new RandomMova();
 
         private void GamePaint(object sender, PaintEventArgs e)
         {
             _timer.Enabled = true;
-            Text = count.ToString();
+            Text = _count.ToString();
 
             #region Perform refactoring
+            /// To do it in a separate class
 
-            float x = 0, y = 0;
+            GameObject temp = null;
 
-            Rabbit temp = null;
-
-            foreach (var item in rabbits)
+            foreach (var item in _gameObjects)
             {
-                x = _wolf.Point.X - item.Point.X;
-                y = _wolf.Point.Y - item.Point.Y;
-
-                if ((x < 20 && x > -20 && y < 20 && y > -20))
+                if (_wolf.DescRectangle.IntersectsWith(item.DescRectangle))
                     temp = item;
             }
 
-            if(temp != null)
+            if (temp != null)
             {
-                rabbits.Remove(temp);
-                count++;
+                _gameObjects.Remove(temp);
+                _count++;
+
+                _gameObjects.Add(new Rabbit()
+                {
+                    Point = new PointF(random.Next(250, 380), random.Next(300, 450)),
+                    Size = new SizeF(50, 50)
+                });
             }
 
-            foreach (var item in rabbits)
+            foreach (var item in _gameObjects)
             {
-                item.Move(r);
+                (item as IMoveable)?.Move(randomMova);
                 item.Draw(e.Graphics);
+
+                //e.Graphics.DrawRectangle(Pens.Black, new Rectangle(new Point((int)item.DescRectangle.X, (int)item.DescRectangle.Y),
+                    //new Size((int)item.DescRectangle.Width, (int)item.DescRectangle.Height)));
             }
 
             #endregion

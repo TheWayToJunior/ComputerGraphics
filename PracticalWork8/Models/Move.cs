@@ -3,7 +3,6 @@ using System.Drawing;
 
 namespace PracticalWork8.Models
 {
-
     public abstract class AnimatedMove : IMoveStrategy
     {
         public int Frame { get; set; }
@@ -64,42 +63,50 @@ namespace PracticalWork8.Models
             new PointF(point.X, point.Y + speed);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class RandomMova
+
+    public class RandomMova : AnimatedMove
     {
-        Random random;
-        
+        private Random _random;
+        private IMoveStrategy _strategy;
+
         public RandomMova()
         {
-            random = new Random((int)DateTime.Now.Ticks);
+            _random = new Random(DateTime.Now.Second);
+            _strategy = GetStrategy(_random.Next(4));
         }
 
-        IMoveStrategy s = new Right(2);
-
-        public IMoveStrategy Move(PointF point, float speed)
+        private IMoveStrategy GetStrategy(int rand)
         {
-            if (Map.Chack(s.Move(point, speed))) 
+            AnimatedMove randStrategy = null;
+
+            switch (_random.Next(4))
             {
-                switch (random.Next(DateTime.Now.Second) % 4)
-                {
-                    case 0:
-                        s =  new Top(3);
-                        break;
-                    case 1:
-                        s = new Bottom(0);
-                        break;
-                    case 2:
-                        s = new Left(1);
-                        break;
-                    case 3:
-                        s = new Right(2);
-                        break;
-                }
+                case 0:
+                    randStrategy = new Top(3);
+                    break;
+                case 1:
+                    randStrategy = new Bottom(0);
+                    break;
+                case 2:
+                    randStrategy = new Left(1);
+                    break;
+                case 3:
+                    randStrategy = new Right(2);
+                    break;
             }
 
-            return s;
+            base.Frame = randStrategy.Frame;
+            return randStrategy;
+        }
+
+        public override PointF Move(PointF point, float speed)
+        {
+            if (Map.Chack(_strategy.Move(point, speed))) 
+            {
+                _strategy = GetStrategy(_random.Next(DateTime.Now.Second) % 4);
+            }
+
+            return _strategy.Move(point, speed);
         }
     }
 }

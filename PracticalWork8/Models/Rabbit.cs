@@ -2,34 +2,28 @@
 
 namespace PracticalWork8.Models
 {
-    public class Rabbit : DynamicGameObject
+    public class Rabbit : DynamicGameObject, IMoveable
     {
         public float Speed { get; set; } = 10;
 
         public Rabbit()
-            : base("rabbit.png", new RectangleF(5, 35, 50, 50))
+            : base("rabbit.png", new RectangleF(0, 0, 50, 50))
         {
             CountFrames = 4;
             CountSprites = 3;
             Gap = new Gap(0, 0);
         }
 
-        public bool IsMoved 
-        {
-            get => throw new System.NotImplementedException(); 
-            set => throw new System.NotImplementedException(); 
-        }
+        public bool IsMoved { get; set; }
 
-        public void Move(RandomMova strategy)
+        public void Move(IMoveStrategy strategy)
         {
-            var s = strategy.Move(Point, Speed);
-
-            if (s is AnimatedMove animated)
+            if (strategy is AnimatedMove animated)
             {
                 Animate(animated.Frame);
             }
 
-            var point = s.Move(Point, Speed);
+            var point = strategy.Move(Point, Speed);
 
             if (!Map.Chack(point))
                 Point = point;
